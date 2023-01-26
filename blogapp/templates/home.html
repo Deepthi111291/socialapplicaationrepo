@@ -1,0 +1,51 @@
+{%extends 'base.html'%}
+
+{%block body_block%}
+
+<div class="row mt-lg-5">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <h1>Welcome User {{request.user}}</h1>
+    </div>
+    <div class="col-4"></div>
+</div>
+<div class="row" style="float:left;">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <form action="" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            {{form.as_p}}
+            <input type="submit" value="post">
+        </form>
+    </div>
+    <div class="col-4"></div>
+</div>
+{%for blog in blogs%}
+<div class="row mt-3">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <p>{{blog.title}}</p>
+        {%if blog.image%}
+
+             <img src="{{blog.image.url}}" class="img-fluid" alt="...">
+             <p>posted_by{{blog.author}}</p>
+             <p>created_at{{blog.posted_date}}</p>
+             {%for comment in blog.comments_set.all%}
+             <div>{{comment.comment}}</div>
+             <div>{{comment.user}}</div>
+             <div><a href="{%url 'add-like' blog.id%}">like</a></div>
+             {{blog.get_like_count}}
+             {{blog.get_liked_users}}
+             {%endfor%}
+             <form action="{%url 'add-comment' blog.id%}" method="post">
+                 {%csrf_token%}
+                 {{comment_form.as_p}}
+                 <input type="submit" class="btn btn-info" value="add">
+             </form>
+        {%endif%}
+
+    </div>
+    <div class="col-4"></div>
+</div>
+{%endfor%}
+{%endblock%}
