@@ -72,7 +72,7 @@ class IndexView(CreateView):
     model=Blogs
     form_class=BlogForm
     success_url = reverse_lazy("home")
-    template_name="home.html"
+    template_name="index.html"
 
     def form_valid(self, form):
         form.instance.author=self.request.user
